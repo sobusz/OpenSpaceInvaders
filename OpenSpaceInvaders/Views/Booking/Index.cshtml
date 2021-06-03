@@ -1,0 +1,33 @@
+﻿@model IEnumerable<OpenSpaceInvaders.Models.BookingModel>
+
+
+<h1>Our desks xD </h1>
+
+<div class="card-columns">
+    @foreach (var item in Model)
+    {
+
+        @*<div class="col-sm-4">*@
+
+        <div class="card" style="background-color: rgba(255, 255, 255, 0.90)">
+
+            <div class="card-body">
+                <h2 class="card-title">
+                    @Html.DisplayFor(modelItem => item.Customer)
+                </h2>
+                <h5 class="card-subtitle mb-2 text-muted">
+                    Author:
+                    @Html.DisplayFor(modelItem => item.CustomerId)
+                </h5>
+                <ul class="list-group list-group-flush">
+
+                    <li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.0)">
+                        Genre:
+                        @Html.DisplayFor(modelItem => item.Desk)
+                    </li>
+                </ul>
+            </div>
+        </div>
+        @*</div>*@
+    }
+</div>
