@@ -1,0 +1,33 @@
+﻿@model IEnumerable<OpenSpaceInvaders.Models.DesksModel>
+
+@{
+    ViewData["Title"] = "Desks";
+
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div class="card-columns">
+
+        @foreach (var item in Model)
+        {
+            <div class="card" style="background-color: rgba(255, 255, 255, 0.90)">
+                <div class="card-body">
+                    <h2 class="card-title">
+                        @Html.DisplayFor(modelItem => item.Id)
+                        <a href="/BookingModels/Create/@item.Id"> ZAREZERWUJ </a>
+                    </h2>
+                    @Html.DisplayFor(modelItem => item.Description)
+
+                </div>
+            </div>
+        }
+    </div>
+</body>
+</html>

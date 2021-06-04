@@ -11,16 +11,21 @@ namespace OpenSpaceInvaders.Models
         [Key]
         public int Id { get; set; }
 
-        [DataType(DataType.Date)]
-        public DateTime StartDate { get; set; }
+        public List<BookingDate> Date { get; set; }
 
-        [DataType(DataType.Date)]
-        public DateTime EndDate { get; set; }
-
-        public bool IsActive { get; set; }
         public int CustomerId { get; set; }
+
         public int DeskId { get; set; }
+
         public virtual CustomerModel Customer { get; set; }
+
         public virtual DesksModel Desk { get; set; }
+    }
+
+    public class BookingDate
+    {
+        [Key]
+        public int Id { get; set; }
+        public DateTime date { get; set; }
     }
 }
