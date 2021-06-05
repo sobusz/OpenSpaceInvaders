@@ -15,6 +15,5 @@ namespace OpenSpaceInvaders.Data
         }
         public DbSet<OpenSpaceInvaders.Models.BookingModel> BookingModel { get; set; }
         public DbSet<OpenSpaceInvaders.Models.DesksModel> DesksModel { get; set; }
-        public DbSet<OpenSpaceInvaders.Models.CustomerModel> CustomerModel { get; set; }
     }
 }

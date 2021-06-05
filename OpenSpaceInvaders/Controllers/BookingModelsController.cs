@@ -2,29 +2,41 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OpenSpaceInvaders.Data;
 using OpenSpaceInvaders.Models;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Security.Claims;
 
 namespace OpenSpaceInvaders.Controllers
 {
+  
     public class BookingModelsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        public class Dates
+        {
+            public DateTime startTime, endTime;
 
-        public BookingModelsController(ApplicationDbContext context)
+            public Dates(DateTime start, DateTime end)
+            {
+                this.startTime = start;
+                this.endTime = end;
+            }
+        }
+
+        public BookingModelsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: BookingModels
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.BookingModel.Include(b => b.Customer).Include(b => b.Desk);
+            var applicationDbContext = _context.BookingModel.Include(b => b.Desk);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -37,7 +49,6 @@ namespace OpenSpaceInvaders.Controllers
             }
 
             var bookingModel = await _context.BookingModel
-                .Include(b => b.Customer)
                 .Include(b => b.Desk)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (bookingModel == null)
@@ -51,7 +62,6 @@ namespace OpenSpaceInvaders.Controllers
         // GET: BookingModels/Create
         public IActionResult Create()
         {
-            ViewData["CustomerId"] = new SelectList(_context.Set<CustomerModel>(), "Id", "Id");
             ViewData["DeskId"] = new SelectList(_context.DesksModel, "Id", "Id");
             return View();
         }
@@ -61,20 +71,44 @@ namespace OpenSpaceInvaders.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CustomerId,DeskId")] BookingModel bookingModel)
+        public async Task<IActionResult> Create([Bind("Id,StartDate,EndDate,CustomerId,DeskId,Name,Surname,PhoneNumber,Email")] BookingModel bookingModel)
         {
-            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var deskId = bookingModel.Id;
+            var applicationUser = await _userManager.GetUserAsync(User);
+            var userEmail = applicationUser?.Email;
+            var userId = applicationUser?.Id;
+
+            bookingModel.
 
             if (ModelState.IsValid)
             {
+                var desks = _context.BookingModel.Where(x => x.DeskId == deskId).ToArray();
+
+                for(var x = 0; x < desks.Count(); x++)
+                {
+                    var desk = desks[x];
+
+                    var currentStart = bookingModel.StartDate;
+                    var currentEnd = bookingModel.EndDate;
+                    var deskStart = desk.StartDate;
+                    var deskEnd = desk.EndDate;
+
+                    if (currentStart > deskStart && currentStart < deskEnd || currentEnd > deskStart && currentEnd < deskEnd)
+                    {
+                        ModelState.AddModelError("Dupa", "dupa");
+                    } 
+                }
+
+
                 _context.Add(bookingModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = userId;
-            ViewData["DeskId"] = bookingModel.DeskId;
+            ViewData["DeskId"] = new SelectList(_context.DesksModel, "Id", "Id", bookingModel.DeskId);
             return View(bookingModel);
         }
+
+
 
         // GET: BookingModels/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -89,7 +123,6 @@ namespace OpenSpaceInvaders.Controllers
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Set<CustomerModel>(), "Id", "Id", bookingModel.CustomerId);
             ViewData["DeskId"] = new SelectList(_context.DesksModel, "Id", "Id", bookingModel.DeskId);
             return View(bookingModel);
         }
@@ -99,7 +132,7 @@ namespace OpenSpaceInvaders.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CustomerId,DeskId")] BookingModel bookingModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,StartDate,EndDate,CustomerId,DeskId,Name,Surname,PhoneNumber,Email")] BookingModel bookingModel)
         {
             if (id != bookingModel.Id)
             {
@@ -126,7 +159,6 @@ namespace OpenSpaceInvaders.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Set<CustomerModel>(), "Id", "Id", bookingModel.CustomerId);
             ViewData["DeskId"] = new SelectList(_context.DesksModel, "Id", "Id", bookingModel.DeskId);
             return View(bookingModel);
         }
@@ -140,7 +172,6 @@ namespace OpenSpaceInvaders.Controllers
             }
 
             var bookingModel = await _context.BookingModel
-                .Include(b => b.Customer)
                 .Include(b => b.Desk)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (bookingModel == null)
