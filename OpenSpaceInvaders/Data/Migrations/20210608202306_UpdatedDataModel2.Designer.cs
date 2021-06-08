@@ -10,14 +10,14 @@ using OpenSpaceInvaders.Data;
 namespace OpenSpaceInvaders.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210603160715_AddedControllers")]
-    partial class AddedControllers
+    [Migration("20210608202306_UpdatedDataModel2")]
+    partial class UpdatedDataModel2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
+                .HasAnnotation("ProductVersion", "3.1.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -228,36 +228,14 @@ namespace OpenSpaceInvaders.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("BookingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DeskId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("DeskId");
-
-                    b.ToTable("BookingModel");
-                });
-
-            modelBuilder.Entity("OpenSpaceInvaders.Models.CustomerModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -273,7 +251,9 @@ namespace OpenSpaceInvaders.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CustomerModel");
+                    b.HasIndex("DeskId");
+
+                    b.ToTable("BookingModel");
                 });
 
             modelBuilder.Entity("OpenSpaceInvaders.Models.DesksModel", b =>
@@ -344,12 +324,6 @@ namespace OpenSpaceInvaders.Data.Migrations
 
             modelBuilder.Entity("OpenSpaceInvaders.Models.BookingModel", b =>
                 {
-                    b.HasOne("OpenSpaceInvaders.Models.CustomerModel", "Customer")
-                        .WithMany("Bookings")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("OpenSpaceInvaders.Models.DesksModel", "Desk")
                         .WithMany("Bookings")
                         .HasForeignKey("DeskId")

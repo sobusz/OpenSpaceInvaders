@@ -2,35 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OpenSpaceInvaders.Data;
 using OpenSpaceInvaders.Models;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace OpenSpaceInvaders.Controllers
 {
-  
     public class BookingModelsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
-        public class Dates
-        {
-            public DateTime startTime, endTime;
 
-            public Dates(DateTime start, DateTime end)
-            {
-                this.startTime = start;
-                this.endTime = end;
-            }
-        }
-
-        public BookingModelsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public BookingModelsController(ApplicationDbContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
         // GET: BookingModels
@@ -59,6 +47,7 @@ namespace OpenSpaceInvaders.Controllers
             return View(bookingModel);
         }
 
+        
         // GET: BookingModels/Create
         public IActionResult Create()
         {
@@ -71,35 +60,11 @@ namespace OpenSpaceInvaders.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,StartDate,EndDate,CustomerId,DeskId,Name,Surname,PhoneNumber,Email")] BookingModel bookingModel)
+        [Authorize]
+        public async Task<IActionResult> Create([Bind("Id,BookingDate,CustomerId,Name,Surname,PhoneNumber,Email,DeskId")] BookingModel bookingModel)
         {
-            var deskId = bookingModel.Id;
-            var applicationUser = await _userManager.GetUserAsync(User);
-            var userEmail = applicationUser?.Email;
-            var userId = applicationUser?.Id;
-
-            bookingModel.
-
             if (ModelState.IsValid)
             {
-                var desks = _context.BookingModel.Where(x => x.DeskId == deskId).ToArray();
-
-                for(var x = 0; x < desks.Count(); x++)
-                {
-                    var desk = desks[x];
-
-                    var currentStart = bookingModel.StartDate;
-                    var currentEnd = bookingModel.EndDate;
-                    var deskStart = desk.StartDate;
-                    var deskEnd = desk.EndDate;
-
-                    if (currentStart > deskStart && currentStart < deskEnd || currentEnd > deskStart && currentEnd < deskEnd)
-                    {
-                        ModelState.AddModelError("Dupa", "dupa");
-                    } 
-                }
-
-
                 _context.Add(bookingModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -107,8 +72,6 @@ namespace OpenSpaceInvaders.Controllers
             ViewData["DeskId"] = new SelectList(_context.DesksModel, "Id", "Id", bookingModel.DeskId);
             return View(bookingModel);
         }
-
-
 
         // GET: BookingModels/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -132,7 +95,7 @@ namespace OpenSpaceInvaders.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,StartDate,EndDate,CustomerId,DeskId,Name,Surname,PhoneNumber,Email")] BookingModel bookingModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BookingDate,CustomerId,Name,Surname,PhoneNumber,Email,DeskId")] BookingModel bookingModel)
         {
             if (id != bookingModel.Id)
             {

@@ -10,14 +10,14 @@ using OpenSpaceInvaders.Data;
 namespace OpenSpaceInvaders.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210604201138_ChangedBookingModel")]
-    partial class ChangedBookingModel
+    [Migration("20210608193056_BookingModelChange")]
+    partial class BookingModelChange
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
+                .HasAnnotation("ProductVersion", "3.1.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -221,26 +221,6 @@ namespace OpenSpaceInvaders.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("OpenSpaceInvaders.Models.BookingDate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("BookingModelId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("date")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookingModelId");
-
-                    b.ToTable("BookingDate");
-                });
-
             modelBuilder.Entity("OpenSpaceInvaders.Models.BookingModel", b =>
                 {
                     b.Property<int>("Id")
@@ -248,27 +228,14 @@ namespace OpenSpaceInvaders.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("BookingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DeskId")
                         .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("DeskId");
-
-                    b.ToTable("BookingModel");
-                });
-
-            modelBuilder.Entity("OpenSpaceInvaders.Models.CustomerModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -284,7 +251,9 @@ namespace OpenSpaceInvaders.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CustomerModel");
+                    b.HasIndex("DeskId");
+
+                    b.ToTable("BookingModel");
                 });
 
             modelBuilder.Entity("OpenSpaceInvaders.Models.DesksModel", b =>
@@ -353,21 +322,8 @@ namespace OpenSpaceInvaders.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("OpenSpaceInvaders.Models.BookingDate", b =>
-                {
-                    b.HasOne("OpenSpaceInvaders.Models.BookingModel", null)
-                        .WithMany("Date")
-                        .HasForeignKey("BookingModelId");
-                });
-
             modelBuilder.Entity("OpenSpaceInvaders.Models.BookingModel", b =>
                 {
-                    b.HasOne("OpenSpaceInvaders.Models.CustomerModel", "Customer")
-                        .WithMany("Bookings")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("OpenSpaceInvaders.Models.DesksModel", "Desk")
                         .WithMany("Bookings")
                         .HasForeignKey("DeskId")

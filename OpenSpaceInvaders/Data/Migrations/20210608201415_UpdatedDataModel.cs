@@ -2,7 +2,7 @@
 
 namespace OpenSpaceInvaders.Data.Migrations
 {
-    public partial class AddedControllers2 : Migration
+    public partial class UpdatedDataModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

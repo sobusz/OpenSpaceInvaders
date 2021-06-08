@@ -13,6 +13,16 @@ namespace OpenSpaceInvaders.Data
             : base(options)
         {
         }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<BookingModel>()
+                .HasOne<DesksModel>(d => d.Desk)
+                .WithMany(x => x.Bookings)
+                .HasForeignKey(k => k.DeskId);
+        }
+
         public DbSet<OpenSpaceInvaders.Models.BookingModel> BookingModel { get; set; }
         public DbSet<OpenSpaceInvaders.Models.DesksModel> DesksModel { get; set; }
     }

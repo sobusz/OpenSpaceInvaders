@@ -13,12 +13,11 @@ namespace OpenSpaceInvaders.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+        public DateTime BookingDate { get; set; }
 
         public string CustomerId { get; set; }
-
-        public int DeskId { get; set; }
 
         public string Name { get; set; }
 
@@ -28,6 +27,10 @@ namespace OpenSpaceInvaders.Models
 
         public string Email { get; set; }
 
-        public virtual DesksModel Desk { get; set; }
+
+        public DesksModel Desk { get; set; }
+        public int DeskId { get; set; }
+
+
     }
 }

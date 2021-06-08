@@ -2,7 +2,7 @@
 
 namespace OpenSpaceInvaders.Data.Migrations
 {
-    public partial class ChangedBookingModelDatesIdentity : Migration
+    public partial class UpdatedDataModel2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

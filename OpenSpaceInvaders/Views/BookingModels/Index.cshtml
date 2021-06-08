@@ -19,10 +19,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
+                @Html.DisplayNameFor(model => model.BookingDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CustomerId)
@@ -49,10 +46,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
+                @Html.DisplayFor(modelItem => item.BookingDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CustomerId)

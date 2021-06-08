@@ -7,6 +7,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Migrations\20210603151349_InitialCreate.cs" />
+    <Compile Remove="Data\Migrations\20210603151349_InitialCreate.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210603160715_AddedControllers.cs" />
+    <Compile Remove="Data\Migrations\20210603160715_AddedControllers.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210603161212_AddedControllers2.cs" />
+    <Compile Remove="Data\Migrations\20210603161212_AddedControllers2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210603164854_AddedControllersDesks.cs" />
+    <Compile Remove="Data\Migrations\20210603164854_AddedControllersDesks.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210603170117_AddedControllersIDs.cs" />
+    <Compile Remove="Data\Migrations\20210603170117_AddedControllersIDs.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210604201138_ChangedBookingModel.cs" />
+    <Compile Remove="Data\Migrations\20210604201138_ChangedBookingModel.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210604224354_ChangedBookingModel2.cs" />
+    <Compile Remove="Data\Migrations\20210604224354_ChangedBookingModel2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210605003306_ChangedBookingModelDates.cs" />
+    <Compile Remove="Data\Migrations\20210605003306_ChangedBookingModelDates.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210608184659_BookingModelKey.cs" />
+    <Compile Remove="Data\Migrations\20210608184659_BookingModelKey.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210608184925_BookingModelKey2.cs" />
+    <Compile Remove="Data\Migrations\20210608184925_BookingModelKey2.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Azure.Data.AppConfiguration" Version="1.0.3" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.0.0" />
     <PackageReference Include="Azure.Storage.Files.Shares" Version="12.0.0-preview.5" />

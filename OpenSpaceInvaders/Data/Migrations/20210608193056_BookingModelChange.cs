@@ -3,26 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OpenSpaceInvaders.Data.Migrations
 {
-    public partial class AddedControllers : Migration
+    public partial class BookingModelChange : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "CustomerModel",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
-                    Surname = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CustomerModel", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "DesksModel",
                 columns: table => new
@@ -42,21 +26,17 @@ namespace OpenSpaceInvaders.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    StartDate = table.Column<DateTime>(nullable: false),
-                    EndDate = table.Column<DateTime>(nullable: false),
-                    IsActive = table.Column<bool>(nullable: false),
-                    CustomerId = table.Column<int>(nullable: false),
-                    DeskId = table.Column<int>(nullable: false)
+                    BookingDate = table.Column<DateTime>(nullable: false),
+                    CustomerId = table.Column<string>(nullable: true),
+                    DeskId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Surname = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BookingModel", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_BookingModel_CustomerModel_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "CustomerModel",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_BookingModel_DesksModel_DeskId",
                         column: x => x.DeskId,
@@ -64,11 +44,6 @@ namespace OpenSpaceInvaders.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BookingModel_CustomerId",
-                table: "BookingModel",
-                column: "CustomerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BookingModel_DeskId",
@@ -80,9 +55,6 @@ namespace OpenSpaceInvaders.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "BookingModel");
-
-            migrationBuilder.DropTable(
-                name: "CustomerModel");
 
             migrationBuilder.DropTable(
                 name: "DesksModel");
