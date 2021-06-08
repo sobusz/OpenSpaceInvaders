@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<OpenSpaceInvaders.Models.BookingModel>
 
 @{
-    ViewData["Title"] = "Booking";
+    ViewData["Title"] = "Desks";
 }
 
 <!DOCTYPE html>
@@ -20,9 +20,6 @@
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.BookingDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CustomerId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
@@ -47,9 +44,6 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.BookingDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CustomerId)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)

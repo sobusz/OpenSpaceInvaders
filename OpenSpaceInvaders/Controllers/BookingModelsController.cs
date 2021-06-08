@@ -8,23 +8,28 @@ using Microsoft.EntityFrameworkCore;
 using OpenSpaceInvaders.Data;
 using OpenSpaceInvaders.Models;
 using Microsoft.AspNetCore.Authorization;
-
+using Microsoft.AspNetCore.Identity;
 
 namespace OpenSpaceInvaders.Controllers
 {
     public class BookingModelsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public BookingModelsController(ApplicationDbContext context)
+        public BookingModelsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: BookingModels
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.BookingModel.Include(b => b.Desk);
+            var appUser = await _userManager.GetUserAsync(User);
+
+            var applicationDbContext = _context.BookingModel.Include(b => b.Desk).Where(x => x.CustomerId == appUser.Id);
+            
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -47,7 +52,6 @@ namespace OpenSpaceInvaders.Controllers
             return View(bookingModel);
         }
 
-        
         // GET: BookingModels/Create
         public IActionResult Create()
         {
@@ -63,8 +67,22 @@ namespace OpenSpaceInvaders.Controllers
         [Authorize]
         public async Task<IActionResult> Create([Bind("Id,BookingDate,CustomerId,Name,Surname,PhoneNumber,Email,DeskId")] BookingModel bookingModel)
         {
+            var appUser = await _userManager.GetUserAsync(User);
+            var userEmail = appUser.Email;
+            var userId = appUser.Id;
+            //bookingModel.DeskId = Id;
+
+            bookingModel.Email = userEmail;
+            bookingModel.CustomerId = userId;
+
             if (ModelState.IsValid)
             {
+                var dupa = _context.BookingModel.Where(x => x.BookingDate == bookingModel.BookingDate).Where(x => x.DeskId == bookingModel.DeskId);
+                if (dupa.Count() > 0)
+                {
+                    return RedirectToAction(nameof(Create));
+
+                }
                 _context.Add(bookingModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
