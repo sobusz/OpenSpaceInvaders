@@ -2,7 +2,17 @@
     ViewData["Title"] = "Home Page";
 }
 
+<h1 class="display-4"> Welcome to OpenSpaceInvaders!</h1>
+
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="card m-4">
+        <div class="card-body">
+            <a type="button" class="btn btn-dark btn-lg btn-block" asp-area="" asp-controller="BookingModels" asp-action="Create">Book a desk in our brand new Open Space</a>
+</div>
+    </div>
+    <div class="card m-4">
+        <div class="card-body">
+            <a type="button" class="btn btn-dark btn-lg btn-block" asp-area="" asp-controller="BlobModels" asp-action="MediaFileUpload">Upload Files so you can access them in our office easily!</a>
+        </div>
+    </div>
 </div>

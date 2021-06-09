@@ -18,7 +18,7 @@ namespace BlobUploadWebApp.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public BlobModelsController(UserManager<IdentityUser> userManager, ApplicationDbContext context) // Constructor
+        public BlobModelsController(UserManager<IdentityUser> userManager, ApplicationDbContext context)
         {
             _userManager = userManager;
             _context = context;
@@ -26,11 +26,11 @@ namespace BlobUploadWebApp.Controllers
         }
 
         BlobUtility utility;
-        string accountName = "openspaceinvadersstorage";      // replace with your storage account Name here
-        string accountKey = "BHSo33+41kh7SZ00VFbBapx/l2M5S8skYrtiVm5vns8LkGqI6Z3mgMXDGcJdv8A4kFwCJacINSR70YoGhGp6kQ==";  // replace with your storage account access key here
+        string accountName = "openspaceinvadersstorage";
+        string accountKey = "BHSo33+41kh7SZ00VFbBapx/l2M5S8skYrtiVm5vns8LkGqI6Z3mgMXDGcJdv8A4kFwCJacINSR70YoGhGp6kQ==";
 
         [Authorize]
-        public IActionResult MediaFileUpload()          // To load the blob media upload view (MediaFileUpload.cshtml file)
+        public IActionResult MediaFileUpload()
         {
             string loggedInUserId = _userManager.GetUserId(User);
             List<BlobModel> userMedia = (from a in _context.BlobModel where a.UserId == loggedInUserId select a).ToList();
@@ -41,11 +41,11 @@ namespace BlobUploadWebApp.Controllers
         [Authorize]
         [HttpPost]
 
-        public ActionResult UploadMediaFile(IFormFile file)                 // upload method to upload the file to blob storage, and store the returned URL of the file in the SQL database
+        public ActionResult UploadMediaFile(IFormFile file)                 
         {
             if (file != null)
             {
-                string ContainerName = "imagecontainer";            // replace with the container name. 
+                string ContainerName = "imagecontainer";            
                 string fileName = Path.GetFileName(file.FileName);
                 Stream imageStream = file.OpenReadStream();
                 var result = utility.UploadBlobAsync(fileName, ContainerName, (IFormFile)file);
@@ -56,10 +56,10 @@ namespace BlobUploadWebApp.Controllers
 
                     try
                     {
-                        usermedium.UserId = loggedInUserId;                                 //If the User ID is an integer then, Int32.Parse(loggedInUserId);
-                        usermedium.MediaUrl = result.Result.Uri.ToString();                 // to insert the url of the blob to the database
-                        usermedium.MediaFileName = result.Result.Name;                      // to insert the media file name to the database
-                        usermedium.MediaFileType = result.Result.Name.Split('.').Last();    // to insert the media file type to the database
+                        usermedium.UserId = loggedInUserId;    
+                        usermedium.MediaUrl = result.Result.Uri.ToString();                 
+                        usermedium.MediaFileName = result.Result.Name;                      
+                        usermedium.MediaFileType = result.Result.Name.Split('.').Last();    
                     }
                     catch
                     {
@@ -89,8 +89,8 @@ namespace BlobUploadWebApp.Controllers
             _context.BlobModel.Remove(userMedium);
             _context.SaveChanges();
             string BlobNameToDelete = userMedium.MediaUrl.Split('/').Last();
-            utility.DeleteBlob(BlobNameToDelete, "imagecontainer");         // container name
-            return RedirectToAction("MediaFileUpload");                             // return page
+            utility.DeleteBlob(BlobNameToDelete, "imagecontainer");
+            return RedirectToAction("MediaFileUpload");
         }
     }
 }

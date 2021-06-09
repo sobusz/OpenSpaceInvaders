@@ -41,10 +41,9 @@
                     File Name: @item.MediaFileName
                 </p>
                 <p>
-                    Date-Time Uploaded: @item.DateTimeUploaded
-                </p>
-                <p>
+                    Uploaded time: @item.DateTimeUploaded
                     File Type: @item.MediaFileType
+
                 </p>
                 <a href="@Url.Action("DeleteMediaFile", "BlobModels",new { id = item.MediaId })" class="btn btn-default btn-block">
                     <Span class="delete-button" aria-hidden="true"> Delete Image</Span>
