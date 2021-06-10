@@ -19,9 +19,16 @@ namespace OpenSpaceInvaders.Models
 
         public string CustomerId { get; set; }
 
+        [RegularExpression(@"^[A-Z]+[a-zA-Z\s]*$"), Required, StringLength(30)]
+
         public string Name { get; set; }
 
+        [RegularExpression(@"^[A-Z]+[a-zA-Z\s]*$"), Required, StringLength(30)]
+
         public string Surname { get; set; }
+
+        [RegularExpression(@"^\d{9}$")]
+        [Required(ErrorMessage = "Enter a valid phone number (9 digits).")]
 
         public string PhoneNumber { get; set; }
 

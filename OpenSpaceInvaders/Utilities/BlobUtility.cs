@@ -12,7 +12,7 @@ namespace OpenSpaceInvaders.Utilities
         public CloudStorageAccount storageAccount;
         public BlobUtility(string AccountName, string AccountKey)
         {
-            string UserConnectionString = string.Format("DefaultEndpointsProtocol=https;AccountName=openspaceinvadersstorage;AccountKey=BHSo33+41kh7SZ00VFbBapx/l2M5S8skYrtiVm5vns8LkGqI6Z3mgMXDGcJdv8A4kFwCJacINSR70YoGhGp6kQ==;EndpointSuffix=core.windows.net", AccountName, AccountKey);    // put your connectoion String to azure blob storage here
+            string UserConnectionString = string.Format("DefaultEndpointsProtocol=https;AccountName=openspaceinvadersstorage;AccountKey=BHSo33+41kh7SZ00VFbBapx/l2M5S8skYrtiVm5vns8LkGqI6Z3mgMXDGcJdv8A4kFwCJacINSR70YoGhGp6kQ==;EndpointSuffix=core.windows.net", AccountName, AccountKey);
             storageAccount = CloudStorageAccount.Parse(UserConnectionString);
         }
 

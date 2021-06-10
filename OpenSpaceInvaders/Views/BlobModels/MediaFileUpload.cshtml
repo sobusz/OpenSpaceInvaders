@@ -11,19 +11,20 @@
         {
             <div class="panel panel-warning">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Upload Your files</h3>
+                    <h3 class="panel-title m-1">Upload Your files</h3>
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-4 col-md-offset-4">
-                            <input type="file" name="file" class="upload-button" />
+                        <div class="col-md-4">
+                            <input type="file" name="file" class="m-1" />
                             <br />
-                            <input type="submit" class="btn save-button" value="Save File" />
+                            <input type="submit" class="btn btn-dark btn-block" value="Save File" />
+
                         </div>
                     </div>
                 </div>
                 <div>
-                    <div class="file-count-display">You have @ViewBag.PhotoCount files </div>
+                    <h2 class="file-count-display">You have @ViewBag.PhotoCount files </h2>
                 </div>
             </div>
         }
@@ -33,22 +34,27 @@
         <br />
         @foreach (var item in Model)
         {
-            <div class="col-lg-3 col-md-4 col-xs-6 thumb image-description">
-                <a class="thumbnail" href="@item.MediaUrl">
-                    <img class="img-responsive" src="@item.MediaUrl" style="height: 250px;width:100%;" alt="">
-                </a>
-                <p>
-                    File Name: @item.MediaFileName
-                </p>
-                <p>
-                    Uploaded time: @item.DateTimeUploaded
-                    File Type: @item.MediaFileType
+    <div class="card m-3 p-3 col-sm-4">
+        <h4> @item.MediaFileName </h4>
+        <a class="thumbnail" >
+            <img class="img-responsive" src="@item.MediaUrl"  style="height: 300px;width:100%;" alt="">
+        </a>
 
-                </p>
-                <a href="@Url.Action("DeleteMediaFile", "BlobModels",new { id = item.MediaId })" class="btn btn-default btn-block">
-                    <Span class="delete-button" aria-hidden="true"> Delete Image</Span>
-                </a>
-            </div>
+        <p>
+            Uploaded time: @item.DateTimeUploaded
+        </p>
+        <p>
+            File Type: @item.MediaFileType
+        </p>
+        <div class="d-flex justify-content-center align-items-center btn-group">
+            <a href="@Url.Action("DeleteMediaFile", "BlobModels",new { id = item.MediaId })" class="btn btn-default btn-block ">
+                <Span class="delete-button btn btn-danger" aria-hidden="true"> Delete file</Span>
+            </a>
+            <a class="btn btn-default" href="@item.MediaUrl">
+                <Span class="delete-button btn btn-success" aria-hidden="true"> Download</Span>
+            </a>
+        </div>
+    </div>
         }
     </div>
 </div>
